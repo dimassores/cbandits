@@ -40,9 +40,10 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 
 ## Project Structure
 
+```text
 ├── src/
 │   ├── algorithms/
-│   │   ├── init.py
+│   │   ├── __init__.py
 │   │   ├── ucb_b1.py
 │   │   ├── ucb_m1.py
 │   │   ├── ucb_b2.py
@@ -50,22 +51,22 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 │   │   └── base_bandit_algorithm.py
 │   │
 │   ├── environments/
-│   │   ├── init.py
+│   │   ├── __init__.py
 │   │   ├── bandit_environment.py
 │   │   └── general_cost_reward_env.py
 │   │
 │   ├── utils/
-│   │   ├── init.py
+│   │   ├── __init__.py
 │   │   ├── data_structures.py
 │   │   ├── estimators.py
 │   │   └── plot_utils.py
 │   │
 │   └── simulations/
-│       ├── init.py
+│       ├── __init__.py
 │       └── runner.py
 │
 ├── config/
-│   ├── init.py
+│   ├── __init__.py
 │   └── simulation_config.py
 │
 ├── notebooks/
@@ -73,7 +74,7 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 │   └── analysis.ipynb
 │
 ├── tests/
-│   ├── init.py
+│   ├── __init__.py
 │   ├── test_estimators.py
 │   ├── test_algorithms.py
 │   └── test_environments.py
@@ -86,4 +87,70 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 ├── README.md
 ├── requirements.txt
 └── setup.py
+```
+
+## Installation
+
+To install the project, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dimassores/budget-constrained-bandits.git
+   cd budget-constrained-bandits
+   ```
+
+2. Create a virtual environment and activate it:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # For Linux/Mac
+   venv\Scripts\activate  # For Windows
+   ```
+
+3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Usage
+
+To use the project, follow these steps:
+
+1. Set up the environment as described in the Installation section.
+2. Run the simulation runner to generate experimental results:
+   ```bash
+   python src/simulations/runner.py
+   ```
+
+## Configuration
+
+The configuration for the simulation can be found in the `config/simulation_config.py` file.
+
+## Running Simulations
+
+The simulation runner is located in the `src/simulations/runner.py` file.
+
+## Analyzing Results
+
+The results can be analyzed using the Jupyter notebooks in the `notebooks/` directory.
+
+## Testing
+
+The test suite can be run using:
+```bash
+pytest
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or new features.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Reference
+
+Cayci, S., Eryilmaz, A. &amp; Srikant, R.. (2020). Budget-Constrained Bandits over General Cost and Reward Distributions. <i>Proceedings of the Twenty Third International Conference on Artificial Intelligence and Statistics</i>, in <i>Proceedings of Machine Learning Research</i> 108:4388-4398 Available from https://proceedings.mlr.press/v108/cayci20a.html.
+
+
 
