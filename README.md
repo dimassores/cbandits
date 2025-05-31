@@ -15,7 +15,7 @@ This repository provides implementations and simulation frameworks for various a
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [Acknowledgments](#references)
 
 ## Introduction
 
