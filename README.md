@@ -150,7 +150,9 @@ This project is licensed under the MIT License.
 
 ## Reference
 
-Cayci, S., Eryilmaz, A. &amp; Srikant, R.. (2020). Budget-Constrained Bandits over General Cost and Reward Distributions. <i>Proceedings of the Twenty Third International Conference on Artificial Intelligence and Statistics</i>, in <i>Proceedings of Machine Learning Research</i> 108:4388-4398 Available from https://proceedings.mlr.press/v108/cayci20a.html.
+This project is built upon the theoretical framework and algorithms proposed in the following academic paper:
+
+* Caycі, S., Eryilmaz, A., & Srikant, R. (2020). **Budget-Constrained Bandits over General Cost and Reward Distributions**. *Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics (AISTATS) 2020*, Palermo, Italy. PMLR: Volume 108.
 
 
 
