@@ -1,5 +1,8 @@
-numpy==1.26.4
-scipy==1.13.0
-matplotlib==3.9.0
-pandas==2.1.4
-jupyterlab==4.2.0
+# Core scientific computing libraries
+numpy>=1.26.0,<2.1.0
+scipy>=1.13.0,<1.15.0
+matplotlib>=3.9.0,<3.10.0
+pandas>=2.2.0,<2.3.0
+
+# Interactive computing environment
+jupyterlab>=4.2.0,<4.3.0
