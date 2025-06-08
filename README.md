@@ -1,6 +1,6 @@
 # Budget-Constrained Bandits with General Cost and Reward Distributions
 
-This repository provides implementations and simulation frameworks for various algorithms addressing the budget-constrained multi-armed bandit problem, particularly focusing on scenarios with random, potentially correlated, and heavy-tailed cost and reward distributions. The algorithms are based on the research presented in "Budget-Constrained Bandits over General Cost and Reward Distributions" by Caycі, Eryilmaz, and Srikant (AISTATS 2020).
+This repository provides implementations and simulation frameworks for various algorithms addressing the budget-constrained multi-armed bandit problem, focusing on scenarios with random, potentially correlated, and heavy-tailed cost and reward distributions. The algorithms are based on the research presented in "Budget-Constrained Bandits over General Cost and Reward Distributions" by Caycі, Eryilmaz, and Srikant (AISTATS 2020).
 
 ## Table of Contents
 
@@ -15,19 +15,19 @@ This repository provides implementations and simulation frameworks for various a
 - [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgments](#references)
+- [Reference](#reference)
 
 ## Introduction
 
-The multi-armed bandit problem is a classic model for the exploration-exploitation dilemma. This project extends the classical setting to a more general and realistic scenario where each action (arm pull) incurs a random cost and yields a random reward, both of which can be correlated and have heavy-tailed distributions. The objective is to maximize the total expected reward under a finite budget constraint on the total cost[cite: 1, 2, 3].
+The multi-armed bandit problem is a classic model for the exploration-exploitation dilemma. This project extends the classical setting to a more general and realistic scenario where each action (arm pull) incurs a random cost and yields a random reward, both of which can be correlated and have heavy-tailed distributions. The objective is to maximize the total expected reward under a finite budget constraint on the total cost.
 
 The repository includes implementations of:
-* **UCB-B1**: An algorithm for sub-Gaussian cases with known second-order moments, exploiting cost-reward correlation[cite: 72, 75, 76].
-* **UCB-M1**: Designed for heavy-tailed cost and reward distributions, achieving $O(\text{log } B)$ regret with fewer moment assumptions by using median-based estimators[cite: 98, 103, 108, 112].
-* **UCB-B2**: For bounded and uncorrelated cost/reward with unknown second-order moments[cite: 132, 133].
-* **UCB-B2C**: Handles bounded and correlated cost/reward with unknown second-order moments, learning the correlation via LMMSE estimation[cite: 142, 143, 144, 145].
+* **UCB-B1**: An algorithm for sub-Gaussian cases with known second-order moments, exploiting cost-reward correlation.
+* **UCB-M1**: Designed for heavy-tailed cost and reward distributions, achieving $O(\log B)$ regret with fewer moment assumptions by using median-based estimators.
+* **UCB-B2**: For bounded and uncorrelated cost/reward with unknown second-order moments.
+* **UCB-B2C**: Handles bounded and correlated cost/reward with unknown second-order moments, learning the correlation via LMMSE estimation.
 
-The theoretical foundations show that an $O(\text{log } B)$ regret is achievable if moments of order $(2+\gamma)$ for some $\gamma>0$ exist for all cost-reward pairs[cite: 4, 25]. The implemented algorithms are shown to achieve tight problem-dependent regret bounds, being optimal up to a universal constant factor for jointly Gaussian cost and reward pairs[cite: 5, 28, 127].
+The implemented algorithms achieve tight problem-dependent regret bounds and are optimal up to a universal constant factor for jointly Gaussian cost and reward pairs. For more details, see the reference paper below.
 
 ## Features
 
@@ -36,7 +36,7 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 * Modular design for easy extension and testing of new algorithms or environments.
 * Utilities for statistical estimation (empirical means, variances, LMMSE, median-based).
 * Simulation runner for reproducible experimental results.
-* Jupyter notebooks for data analysis and visualization.
+* Jupyter notebook template for data analysis and visualization.
 
 ## Project Structure
 
@@ -70,8 +70,7 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 │   └── simulation_config.py
 │
 ├── notebooks/
-│   ├── exploration.ipynb
-│   └── analysis.ipynb
+│   └── analysis.ipynb  # (template, currently empty)
 │
 ├── tests/
 │   ├── __init__.py
@@ -80,23 +79,23 @@ The theoretical foundations show that an $O(\text{log } B)$ regret is achievable
 │   └── test_environments.py
 │
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   ├── raw/        # (for raw simulation data, if generated)
+│   └── processed/  # (for processed results, if generated)
 │
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
-└── setup.py
+└── LICENSE
 ```
 
 ## Installation
 
 To install the project, follow these steps:
 
-1. Clone the repository:
+1. Clone the repository (replace the URL with your actual repository if different):
    ```bash
-   git clone https://github.com/dimassores/budget-constrained-bandits.git
-   cd budget-constrained-bandits
+   git clone <your-repo-url> cbandits
+   cd cbandits
    ```
 
 2. Create a virtual environment and activate it:
@@ -113,8 +112,6 @@ To install the project, follow these steps:
 
 ## Usage
 
-To use the project, follow these steps:
-
 1. Set up the environment as described in the Installation section.
 2. Run the simulation runner to generate experimental results:
    ```bash
@@ -123,19 +120,23 @@ To use the project, follow these steps:
 
 ## Configuration
 
-The configuration for the simulation can be found in the `config/simulation_config.py` file.
+Simulation parameters can be configured in the `config/simulation_config.py` file.
 
 ## Running Simulations
 
-The simulation runner is located in the `src/simulations/runner.py` file.
+The main entry point for running simulations is `src/simulations/runner.py`.
 
 ## Analyzing Results
 
-The results can be analyzed using the Jupyter notebooks in the `notebooks/` directory.
+A Jupyter notebook template is provided in the `notebooks/` directory for analyzing results. (Currently, `analysis.ipynb` is empty; you can use it as a starting point for your own analysis.)
+
+## Data Directory
+
+The `data/raw/` and `data/processed/` directories are provided for storing simulation data and processed results. These directories are empty by default and will be populated if you modify the code to save outputs.
 
 ## Testing
 
-The test suite can be run using:
+Run the test suite using:
 ```bash
 pytest
 ```
@@ -150,7 +151,7 @@ This project is licensed under the MIT License.
 
 ## Reference
 
-This project is built upon the theoretical framework and algorithms proposed in the following academic paper:
+This project is based on the following academic paper:
 
 * Caycі, S., Eryilmaz, A., & Srikant, R. (2020). **Budget-Constrained Bandits over General Cost and Reward Distributions**. *Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics (AISTATS) 2020*, Palermo, Italy. PMLR: Volume 108.
 
