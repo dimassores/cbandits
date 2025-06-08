@@ -2,7 +2,7 @@
 
 import numpy as np
 from .base_bandit_algorithm import BaseBanditAlgorithm
-from ..utils.estimators import calculate_empirical_mean, calculate_lmmse_omega, calculate_lmmse_variance_reduction
+from ..utils.estimators import calculate_empirical_mean, calculate_lmmse_omega_empirical, calculate_lmmse_variance_reduction_empirical
 
 class UCB_M1(BaseBanditAlgorithm):
     """
@@ -55,13 +55,13 @@ class UCB_M1(BaseBanditAlgorithm):
 
     def _get_median_rate_estimator(self, k, current_epoch):
         """
-        Calculates the median-based rate estimator for arm k. [cite: 104]
+        Calculates the median-based rate estimator for arm k. # 
         """
         T_k = self.arm_pulls[k]
         if T_k == 0:
             return 0.0 # Or some default value if no pulls
 
-        # m = floor(3.5 * alpha * log(n)) + 1 [cite: 104]
+        # m = floor(3.5 * alpha * log(n)) + 1 # 
         m = int(np.floor(3.5 * self.alpha * np.log(current_epoch))) + 1
         
         # If T_k is very small, we might not have enough samples for 'm' groups.
@@ -86,21 +86,21 @@ class UCB_M1(BaseBanditAlgorithm):
             group_X = self.arm_samples_X[k][start_idx:end_idx]
             group_R = self.arm_samples_R[k][start_idx:end_idx]
 
-            # Calculate empirical mean for each group [cite: 105]
+            # Calculate empirical mean for each group # 
             emp_X_group = np.mean(group_X)
             emp_R_group = np.mean(group_R)
 
-            # Calculate rate for the group [cite: 105]
+            # Calculate rate for the group # 
             # max(0, emp_R_group) and max(self.b_min_cost, emp_X_group) for stability
             group_rate = max(0, emp_R_group) / max(self.b_min_cost, emp_X_group)
             rates_from_groups.append(group_rate)
         
-        # Return the median of the group rates [cite: 105]
+        # Return the median of the group rates # 
         return np.median(rates_from_groups)
 
     def _get_median_empirical_X_estimator(self, k, current_epoch):
         """
-        Calculates the median of empirical mean of X for arm k, used in the denominator. [cite: 105]
+        Calculates the median of empirical mean of X for arm k, used in the denominator. # 
         """
         T_k = self.arm_pulls[k]
         if T_k == 0:
@@ -146,20 +146,20 @@ class UCB_M1(BaseBanditAlgorithm):
         for k in range(self.num_arms):
             T_k = self.arm_pulls[k]
             
-            # Median-based rate estimator [cite: 105]
+            # Median-based rate estimator # 
             r_bar_k = self._get_median_rate_estimator(k, current_epoch)
             
-            # Median-based empirical mean for X in the denominator [cite: 105]
+            # Median-based empirical mean for X in the denominator # 
             median_emp_X_k = self._get_median_empirical_X_estimator(k, current_epoch)
 
-            # Deviations in cost and reward [cite: 104]
+            # Deviations in cost and reward # 
             epsilon_k_n_M = 11 * np.sqrt(self.alpha * self.V_XR[k] * log_n / T_k)
             eta_k_n_M = 11 * np.sqrt(self.alpha * self.var_X[k] * log_n / T_k)
 
-            # Stability condition check (from Proposition 2, lambda=1.28) [cite: 106]
+            # Stability condition check (from Proposition 2, lambda=1.28) # 
             stability_condition_met = True
             lambda_val = 1.28
-            # The denominator is (median_emp_X_k)^+ [cite: 105]
+            # The denominator is (median_emp_X_k)^+ # 
             effective_theta1 = max(self.b_min_cost, median_emp_X_k) 
 
             if eta_k_n_M >= effective_theta1 * (lambda_val - 1) / lambda_val:
@@ -168,7 +168,7 @@ class UCB_M1(BaseBanditAlgorithm):
             if not stability_condition_met:
                 c_k_n_M = np.inf # Set confidence bound to infinity if stability condition not met
             else:
-                # Calculate the confidence bound term c_k,n^H [cite: 105]
+                # Calculate the confidence bound term c_k,n^H # 
                 # Note: (r_bar_k - omega_k) in the numerator
                 c_k_n_M_numerator = epsilon_k_n_M + (r_bar_k - self.omega_k[k]) * eta_k_n_M
                 c_k_n_M = (2 * np.sqrt(2) * c_k_n_M_numerator) / effective_theta1

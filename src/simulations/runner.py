@@ -67,9 +67,9 @@ def run_simulations():
                 # but within a single execution, each of the NUM_RUNS will be independent.
                 env = GeneralCostRewardEnvironment(num_arms=num_arms, arm_configs=ARM_CONFIGS)
                 
-                # The optimal static policy pulls k* until the budget is depleted. [cite: 58]
-                # Its total reward is roughly r* * B + O(1). [cite: 63]
-                # The total number of pulls for the optimal static policy is N_pi*(B) = inf {n : S_n > B}. [cite: 57]
+                # The optimal static policy pulls k* until the budget is depleted. # 
+                # Its total reward is roughly r* * B + O(1). # 
+                # The total number of pulls for the optimal static policy is N_pi*(B) = inf {n : S_n > B}. # 
                 # The expected total reward for optimal static policy is E[REW_pi*(B)] ~ r* * B.
                 optimal_static_reward_expected = env.get_optimal_reward_rate() * budget
 
@@ -84,7 +84,7 @@ def run_simulations():
 
                 # Continue pulling arms until the budget is depleted
                 # We assume the reward corresponding to the final epoch during which
-                # the budget is depleted is gathered by the controller. [cite: 54]
+                # the budget is depleted is gathered by the controller. # 
                 while current_total_cost <= budget:
                     epoch += 1
                     
@@ -105,9 +105,9 @@ def run_simulations():
                 cumulative_rewards_per_run.append(current_total_reward)
                 
                 # Calculate regret for this run.
-                # Regret_pi(B) = E[REW_opt(B)] - E[REW_pi(B)]. [cite: 60]
+                # Regret_pi(B) = E[REW_opt(B)] - E[REW_pi(B)]. # 
                 # We approximate E[REW_opt(B)] with the reward of the optimal static policy.
-                # The optimality gap for pi* is O(1). [cite: 67]
+                # The optimality gap for pi* is O(1). # 
                 regret_for_run = optimal_static_reward_expected - current_total_reward
                 cumulative_regrets_per_run.append(regret_for_run)
 

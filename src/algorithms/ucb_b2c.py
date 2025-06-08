@@ -27,19 +27,19 @@ class UCB_B2C(BaseBanditAlgorithm):
         
         self.alpha = algorithm_params.get('alpha', 2.1) # Default alpha if not provided
         self.b_min_cost = algorithm_params.get('b_min_cost', 0.1) # Small positive constant for denominator stability
-        self.omega_bar = algorithm_params.get('omega_bar', 2.0) # Given parameter, max_k omega_k for M_Z calculation [cite: 1]
+        self.omega_bar = algorithm_params.get('omega_bar', 2.0) # Given parameter, max_k omega_k for M_Z calculation #
 
         # Initialize arm-specific statistics to store all observed samples
         self.arm_samples_X = [[] for _ in range(num_arms)]
         self.arm_samples_R = [[] for _ in range(num_arms)]
         self.arm_pulls = np.zeros(num_arms) # T_k(n)
 
-        # Max bounds for costs and rewards (M_X, M_R) - assumed known for UCB-B2C [cite: 1]
+        # Max bounds for costs and rewards (M_X, M_R) - assumed known for UCB-B2C #
         self.M_X = np.array([config['params']['M_X'] for config in arm_configs])
         self.M_R = np.array([config['params']['M_R'] for config in arm_configs])
         
-        # M_Z = M_R + omega_bar * M_X [cite: 1]
-        # This M_Z is used in the bias terms epsilon_k,n^B2C and nu_k,n(L_k) [cite: 1]
+        # M_Z = M_R + omega_bar * M_X #
+        # This M_Z is used in the bias terms epsilon_k,n^B2C and nu_k,n(L_k) #
         self.M_Z = self.M_R + self.omega_bar * self.M_X # Element-wise sum
 
     def select_arm(self, current_total_cost, current_epoch):
@@ -60,7 +60,7 @@ class UCB_B2C(BaseBanditAlgorithm):
 
         ucb_values = np.zeros(self.num_arms)
         
-        # We use current_epoch as 'n' for log(n) term as described in the paper (e.g., log(n^alpha) -> alpha * log(n)) [cite: 1]
+        # We use current_epoch as 'n' for log(n) term as described in the paper (e.g., log(n^alpha) -> alpha * log(n)) #
         log_n_alpha = self.alpha * np.log(current_epoch) 
 
         for k in range(self.num_arms):
@@ -88,13 +88,13 @@ class UCB_B2C(BaseBanditAlgorithm):
                 sum_X, sum_R, sum_X_sq, sum_R_sq, sum_XR, T_k
             )
             
-            # Estimate L_k,n(hat_omega_k,n) which is hat_L_k,n(hat_omega_k,n) from the paper [cite: 1]
+            # Estimate L_k,n(hat_omega_k,n) which is hat_L_k,n(hat_omega_k,n) from the paper #
             # This is the empirical variance of (R - omega*X)
             hat_L_k_n_omega_k_n = calculate_lmmse_variance_reduction_empirical(
                 sum_X, sum_R, sum_X_sq, sum_R_sq, sum_XR, T_k, hat_omega_k_n
             )
             
-            # Bias terms epsilon_k,n^B2C and eta_k,n^B2C as per UCB-B2C definition (Section 6.2) [cite: 1]
+            # Bias terms epsilon_k,n^B2C and eta_k,n^B2C as per UCB-B2C definition (Section 6.2) #
             # epsilon_k,n^B2C = sqrt(2*hat_L_k,n(hat_omega_k,n)*log(n^alpha)/T_k) + 3*M_Z*log(n^alpha)/T_k
             epsilon_k_n_b2c = np.sqrt(2 * hat_L_k_n_omega_k_n * log_n_alpha / T_k) + \
                               (3 * self.M_Z[k] * log_n_alpha / T_k)
@@ -105,11 +105,11 @@ class UCB_B2C(BaseBanditAlgorithm):
             eta_k_n_b2c = np.sqrt(2 * emp_var_X * log_n_alpha / T_k) + \
                           (3 * self.M_X[k] * log_n_alpha / T_k)
 
-            # Stability condition check (Proposition 2, lambda=1.28) [cite: 1]
+            # Stability condition check (Proposition 2, lambda=1.28) #
             stability_condition_met = True
             lambda_val = 1.28
             
-            effective_theta1 = max(self.b_min_cost, emp_mean_X) # (E_n[X_k])^+ [cite: 1]
+            effective_theta1 = max(self.b_min_cost, emp_mean_X) # (E_n[X_k])^+ #
 
             if eta_k_n_b2c >= effective_theta1 * (lambda_val - 1) / lambda_val:
                 stability_condition_met = False
@@ -118,14 +118,14 @@ class UCB_B2C(BaseBanditAlgorithm):
                 c_k_n_b2c = np.inf # Set confidence bound to infinity if stability condition not met
             else:
                 # Calculate the confidence bound term c_k,n^B2C
-                # c_k,n^B2C = 1.4 * (epsilon_k,n^B2C + (r_hat_k - hat_omega_k,n)^+ * eta_k,n^B2C) / (E_n[X_k])^+ [cite: 1]
+                # c_k,n^B2C = 1.4 * (epsilon_k,n^B2C + (r_hat_k - hat_omega_k,n)^+ * eta_k,n^B2C) / (E_n[X_k])^+ #
                 # Note: (r_hat_k - hat_omega_k_n)^+ implies max(0, r_hat_k - hat_omega_k_n)
                 c_k_n_b2c_numerator = epsilon_k_n_b2c + max(0, r_hat_k - hat_omega_k_n) * eta_k_n_b2c
                 c_k_n_b2c = 1.4 * c_k_n_b2c_numerator / effective_theta1
 
             ucb_values[k] = r_hat_k + c_k_n_b2c
 
-        # Select the arm with the maximum UCB value [cite: 1]
+        # Select the arm with the maximum UCB value #
         selected_arm = np.argmax(ucb_values)
         return selected_arm
 
