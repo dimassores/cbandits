@@ -30,6 +30,7 @@ class GeneralCostRewardEnvironment(BanditEnvironment):
             seed (int, optional): Random seed for reproducibility. Defaults to None.
         """
         super().__init__(num_arms, arm_configs)
+        self._initial_seed = seed # Store the initial seed here!
         self.rng = np.random.default_rng(seed) # Use NumPy's new Generator for reproducibility
 
         # Pre-process arm configurations for sampling
@@ -134,7 +135,8 @@ class GeneralCostRewardEnvironment(BanditEnvironment):
             # Modeling correlation between non-Gaussian heavy-tailed distributions is complex
             # and often involves copulas. For a simple demo, we'll draw independently.
             # If `correlation` is > 0, we can introduce a simple linear dependency,
-            # but it won't guarantee the exact correlation or marginals.
+            # but it won't guarantee the exact correlation or marginals for non-Gaussian
+            # heavy-tailed distributions, but can introduce some dependency.
             
             # Pareto distribution for cost (a, m where m is scale, a is shape parameter)
             # numpy.random.pareto(a, size) + 1 to shift to be >= 1 or custom loc
@@ -150,9 +152,7 @@ class GeneralCostRewardEnvironment(BanditEnvironment):
             # where x_m is implicitly 1 by default, and we can scale it.
             # If the config specifies 'loc_pareto_X' as the minimum value (x_m),
             # then we generate `rng.pareto(alpha) * loc_pareto_X + loc_pareto_X` is one way.
-            # Or simpler: `rng.pareto(alpha)` gives values >=0.
-            # The paper states: `rng.pareto(shape_param) + scale_param` for classical Pareto
-            # Let's use `rng.pareto(a)` then scale/shift.
+            # Or simpler: `rng.pareto(a)` then scale/shift.
             
             alpha_pareto_X = sampler['params_X']['alpha']
             loc_pareto_X = sampler['params_X']['loc']
@@ -212,6 +212,6 @@ class GeneralCostRewardEnvironment(BanditEnvironment):
         # across multiple simulations. If not, rng.default_rng() manages its own state
         # but will not produce identical sequences across `reset` calls.
         if hasattr(self, '_initial_seed') and self._initial_seed is not None:
-            self.rng = np.random.default_rng(self._initial_seed)
+            self.rng = np.random.default_rng(self._initial_seed) #
         # If no initial_seed was stored, we just let rng continue its sequence.
         # For full reproducibility of multiple runs *across sessions*, ensure `seed` is passed.

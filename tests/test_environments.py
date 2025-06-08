@@ -2,7 +2,7 @@
 
 import unittest
 import numpy as np
-import scipy.stats as stats # For checking heavy-tailed properties conceptually
+import scipy.stats as stats
 
 # Import environment classes
 from src.environments import BanditEnvironment, GeneralCostRewardEnvironment
@@ -27,23 +27,41 @@ TEST_ARM_CONFIGS_HEAVY_TAILED = [
 class TestBanditEnvironment(unittest.TestCase):
 
     def test_base_bandit_environment_init(self):
-        """Test BanditEnvironment initialization."""
+        """Test BanditEnvironment initialization, including abstract class behavior."""
         with self.assertRaises(ValueError):
             BanditEnvironment(num_arms=0, arm_configs=[])
         
-        # Test valid initialization
-        env = BanditEnvironment(num_arms=1, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN[:1])
-        self.assertEqual(env.num_arms, 1)
-        self.assertAlmostEqual(env.get_optimal_reward_rate(), 2.0 / 1.0) # 2.0 for Arm 0
-        self.assertEqual(env.optimal_arm_index, 0)
-        self.assertAlmostEqual(env.get_optimal_arm_expected_cost(), 1.0)
+        # Test that trying to instantiate the abstract class directly raises a TypeError
+        with self.assertRaises(TypeError):
+            BanditEnvironment(num_arms=1, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN[:1])
+        
+        # The following assertions were for a successful instantiation,
+        # but BanditEnvironment is abstract, so they are not reachable.
+        # These checks are implicitly covered by tests for concrete subclasses like GeneralCostRewardEnvironment.
+        # self.assertEqual(env.num_arms, 1)
+        # self.assertAlmostEqual(env.get_optimal_reward_rate(), 2.0 / 1.0)
+        # self.assertEqual(env.optimal_arm_index, 0)
+        # self.assertAlmostEqual(env.get_optimal_arm_expected_cost(), 1.0)
 
-        # Test with multiple arms, check optimal selection
-        env_multi = BanditEnvironment(num_arms=2, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN)
-        # Arm 0 rate: 2.0/1.0 = 2.0
-        # Arm 1 rate: 2.5/1.1 = 2.27 (approx)
-        self.assertAlmostEqual(env_multi.get_optimal_reward_rate(), 2.5 / 1.1)
-        self.assertEqual(env_multi.optimal_arm_index, 1)
+        # Test BanditEnvironment's *internal logic* for optimal rate calculation
+        # using a mock to bypass instantiation issue, or simply rely on concrete class tests
+        # For simplicity, we'll rely on the GeneralCostRewardEnvironment tests for this.
+        # However, for thoroughness of the base class logic itself, one could do:
+        #
+        # from unittest.mock import MagicMock
+        # mock_env = MagicMock(spec=BanditEnvironment)
+        # mock_env.num_arms = 2
+        # mock_env.arm_configs = TEST_ARM_CONFIGS_GAUSSIAN
+        # # Manually call the __init__ logic that calculates optimal rates
+        # BanditEnvironment.__init__(mock_env, mock_env.num_arms, mock_env.arm_configs)
+        # self.assertAlmostEqual(mock_env.get_optimal_reward_rate(), 2.5 / 1.1)
+        # self.assertEqual(mock_env.optimal_arm_index, 1)
+        #
+        # But this is more complex and usually not strictly necessary if concrete classes fully cover it.
+        # The test for GeneralCostRewardEnvironment's init will ensure the super().__init__ works.
+        env_multi_concrete = GeneralCostRewardEnvironment(num_arms=2, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN)
+        self.assertAlmostEqual(env_multi_concrete.get_optimal_reward_rate(), 2.5 / 1.1)
+        self.assertEqual(env_multi_concrete.optimal_arm_index, 1)
 
 
 class TestGeneralCostRewardEnvironment(unittest.TestCase):

@@ -53,31 +53,20 @@ class TestEstimators(unittest.TestCase):
 
         # Perfectly correlated positive (X, R) = (1,2), (2,4), (3,6) -> R = 2X
         # X: [1,2,3], R: [2,4,6]
-        # Sum_X = 6, Sum_R = 12, Sum_X_sq = 14, Sum_R_sq = 56, Sum_XR = 4 + 16 + 18 = 38
+        # Sum_X = 6, Sum_R = 12, Sum_X_sq = 14, Sum_R_sq = 56, Sum_XR = 28
         # Num_pulls = 3
-        # Emp_mean_X = 2, Emp_mean_R = 4
-        # Emp_var_X = (14/3) - (2^2) = 2/3
-        # Emp_cov_XR = (38/3) - (2*4) = 12.666... - 8 = 4.666... = 14/3
-        # Omega = (14/3) / (2/3) = 7
-        # Ah, the formula for omega_k is Cov(X,R)/Var(X). If R=2X, then Cov(X,2X) = 2Var(X), so omega should be 2.
-        # My manual calculation of Sum_XR for (1,2), (2,4), (3,6) is:
-        # (1*2) + (2*4) + (3*6) = 2 + 8 + 18 = 28.
-        # Let's re-calculate: Sum_X = 6, Sum_R = 12, Sum_X_sq = 14, Sum_R_sq = 56, Sum_XR = 28.
-        # Emp_cov_XR = (28/3) - (2*4) = 9.333... - 8 = 1.333... = 4/3
-        # Omega = (4/3) / (2/3) = 2.0
+        # Omega = 2.0
         self.assertAlmostEqual(calculate_lmmse_omega_empirical(6, 12, 14, 56, 28, 3), 2.0)
 
-        # Uncorrelated (X, R) = (1,1), (2,3), (3,2) -> mean_X=2, mean_R=2
-        # Sum_X = 6, Sum_R = 6, Sum_X_sq = 14, Sum_R_sq = 1+9+4=14, Sum_XR = 1*1+2*3+3*2 = 1+6+6=13
+        # Uncorrelated (X, R) = (1,1), (2,3), (3,2) -> omega = 0.5
+        # Sum_X = 6, Sum_R = 6, Sum_X_sq = 14, Sum_R_sq = 14, Sum_XR = 13
         # Num_pulls = 3
-        # Emp_mean_X = 2, Emp_mean_R = 2
-        # Emp_var_X = 2/3
-        # Emp_cov_XR = (13/3) - (2*2) = 4.333... - 4 = 0.333... = 1/3
-        # Omega = (1/3) / (2/3) = 0.5
+        # Omega = 0.5
         self.assertAlmostEqual(calculate_lmmse_omega_empirical(6, 6, 14, 14, 13, 3), 0.5)
 
         # Zero variance in X
-        self.assertAlmostEqual(calculate_lmmse_omega_empirical(3, 6, 9, 36, 18, 3), 0.0) # X=[3,3,3], R=[6,6,6]
+        # X=[1,1,1], R=[2,2,2] -> Sum_X=3, Sum_R=6, Sum_X_sq=3, Sum_R_sq=12, Sum_XR=6, Num_pulls=3
+        self.assertAlmostEqual(calculate_lmmse_omega_empirical(3, 6, 3, 12, 6, 3), 0.0) # Corrected inputs for zero variance in X
 
 
     def test_calculate_lmmse_variance_reduction_empirical(self):
@@ -89,17 +78,12 @@ class TestEstimators(unittest.TestCase):
         # Perfectly correlated R=2X, use omega=2.0 (should be 0 variance reduction)
         # Sum_X = 6, Sum_R = 12, Sum_X_sq = 14, Sum_R_sq = 56, Sum_XR = 28, Num_pulls = 3
         # omega = 2.0 (calculated in previous test)
-        # Var(R) = (56/3) - 4^2 = 18.666... - 16 = 2.666... = 8/3
-        # Var(X) = (14/3) - 2^2 = 0.666... = 2/3
-        # Reduced variance = Var(R) - omega^2 * Var(X) = (8/3) - (2^2 * 2/3) = 8/3 - 8/3 = 0
+        # Reduced variance = 0
         self.assertAlmostEqual(calculate_lmmse_variance_reduction_empirical(6, 12, 14, 56, 28, 3, 2.0), 0.0)
 
         # Uncorrelated (X, R) = (1,1), (2,3), (3,2) -> omega = 0.5
         # Sum_X = 6, Sum_R = 6, Sum_X_sq = 14, Sum_R_sq = 14, Sum_XR = 13, Num_pulls = 3
-        # Emp_var_R = (14/3) - 2^2 = 2/3
-        # Emp_var_X = 2/3
-        # omega = 0.5
-        # Reduced variance = (2/3) - (0.5^2 * 2/3) = (2/3) - (0.25 * 2/3) = 2/3 - 1/6 = 4/6 - 1/6 = 3/6 = 0.5
+        # Reduced variance = 0.5
         self.assertAlmostEqual(calculate_lmmse_variance_reduction_empirical(6, 6, 14, 14, 13, 3, 0.5), 0.5)
 
         # Test with Var(X) = 0 case
