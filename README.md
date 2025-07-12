@@ -8,6 +8,7 @@ This repository provides implementations and simulation frameworks for various a
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Running Simulations](#running-simulations)
@@ -65,6 +66,13 @@ The implemented algorithms achieve tight problem-dependent regret bounds and are
 │       ├── __init__.py
 │       └── runner.py
 │
+├── examples/
+│   ├── README.md
+│   ├── simple_ucb_b1_example.py
+│   ├── advanced_ucb_b1_example.py
+│   ├── UCB_B1_Guide.md
+│   └── Quick_Start_Guide.md
+│
 ├── config/
 │   ├── __init__.py
 │   └── simulation_config.py
@@ -110,13 +118,62 @@ To install the project, follow these steps:
    pip install -r requirements.txt
    ```
 
+## Quick Start
+
+🚀 **Get started in 5 minutes!**
+
+1. **Run a basic example**:
+   ```bash
+   python examples/simple_ucb_b1_example.py
+   ```
+
+2. **Experiment with parameters**:
+   ```bash
+   python examples/advanced_ucb_b1_example.py
+   ```
+
+3. **Read the guides**:
+   - [Quick Start Guide](examples/Quick_Start_Guide.md) - Essential parameters and tips
+   - [UCB-B1 Guide](examples/UCB_B1_Guide.md) - Comprehensive algorithm explanation
+
+4. **Run the full simulation suite**:
+   ```bash
+   python src/simulations/runner.py
+   ```
+
+### What You'll See
+
+The examples demonstrate:
+- **3-arm bandit problem** with clear optimal arm
+- **Parameter comparison** showing exploration vs exploitation trade-offs
+- **Learning curves** showing how performance improves with budget
+- **Regret analysis** measuring algorithm performance
+
+### Example Output
+```
+Expected reward rates: [3.0, 2.0, 1.0]  # Arm 0 is optimal
+Final arm pulls: [388, 368, 265]         # Algorithm focuses on best arm
+Regret: 861.87                           # Performance gap from optimal
+```
+
 ## Usage
+
+### Basic Usage
 
 1. Set up the environment as described in the Installation section.
 2. Run the simulation runner to generate experimental results:
    ```bash
    python src/simulations/runner.py
    ```
+
+### Advanced Usage
+
+For more detailed examples and experimentation:
+
+- **Start with examples**: See the [examples/](examples/) folder for practical demonstrations
+- **Parameter tuning**: Use `examples/advanced_ucb_b1_example.py` to experiment with different settings
+- **Custom scenarios**: Modify the examples to create your own bandit problems
+- **Performance analysis**: Use the provided metrics to evaluate algorithm performance
 
 ## Configuration
 
