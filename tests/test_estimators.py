@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 # Import estimator functions
-from src.utils.estimators import (
+from cbandits import (
     calculate_empirical_mean,
     calculate_empirical_variance,
     calculate_lmmse_omega_empirical,

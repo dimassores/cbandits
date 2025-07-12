@@ -1,6 +1,6 @@
 # Quick Start Guide: Testing UCB-B1 Algorithm
 
-## 🚀 Getting Started in 5 Minutes
+# 🚀 Getting Started in 5 Minutes
 
 ### 1. **Basic Test** (Run the simple example)
 ```bash
@@ -166,12 +166,6 @@ Regret: 861.87                           # Performance gap
 4. **Compare with other algorithms** (UCB-M1, UCB-B2, UCB-B2C)
 5. **Analyze results** using the provided metrics
 
-## 🔗 Files Created
-
-- `simple_ucb_b1_example.py` - Basic usage example
-- `advanced_ucb_b1_example.py` - Parameter experimentation
-- `UCB_B1_Guide.md` - Detailed algorithm guide
-- `Quick_Start_Guide.md` - This summary guide
 
 ## 💡 Pro Tips
 

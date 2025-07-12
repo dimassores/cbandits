@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Simple example demonstrating how to use UCB-B2 algorithm
-for budget-constrained multi-armed bandits with unknown variances.
+for budget-constrained multi-armed bandits.
 """
 
 import numpy as np
@@ -11,8 +11,8 @@ import os
 # Add the current directory to the path so we can import from src
 sys.path.append('.')
 
-from src.algorithms import UCB_B2
-from src.environments import GeneralCostRewardEnvironment
+# Import from the cbandits package
+from cbandits import UCB_B2, GeneralCostRewardEnvironment
 
 def simple_ucb_b2_test():
     """

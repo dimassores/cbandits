@@ -98,11 +98,30 @@ The implemented algorithms achieve tight problem-dependent regret bounds and are
 
 ## Installation
 
-To install the project, follow these steps:
+### Quick Start
 
-1. Clone the repository (replace the URL with your actual repository if different):
+Install the library directly from the repository:
+
+```bash
+# Clone and install in development mode
+git clone https://github.com/dimassores/cbandits.git
+cd cbandits
+pip install -e .
+```
+
+### From PyPI (When Published)
+
+```bash
+pip install cbandits
+```
+
+### Development Setup
+
+For detailed installation instructions, see [INSTALL.md](INSTALL.md).
+
+1. Clone the repository:
    ```bash
-   git clone <your-repo-url> cbandits
+   git clone https://github.com/dimassores/cbandits.git
    cd cbandits
    ```
 
@@ -113,9 +132,14 @@ To install the project, follow these steps:
    venv\Scripts\activate  # For Windows
    ```
 
-3. Install the required dependencies:
+3. Install the package in development mode:
    ```bash
-   pip install -r requirements.txt
+   pip install -e .
+   ```
+
+   Or with development dependencies:
+   ```bash
+   pip install -e ".[dev]"
    ```
 
 ## Quick Start
@@ -124,12 +148,12 @@ To install the project, follow these steps:
 
 1. **Run a basic example**:
    ```bash
-   python examples/simple_ucb_b1_example.py
+   python examples/simple_examples/simple_ucb_b1_example.py
    ```
 
 2. **Experiment with parameters**:
    ```bash
-   python examples/advanced_ucb_b1_example.py
+   python examples/advanced_examples/advanced_ucb_b1_example.py
    ```
 
 3. **Read the guides**:

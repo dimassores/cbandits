@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Advanced example demonstrating UCB-M1 parameter experimentation
-and comparison with different settings for heavy-tailed cost-reward distributions.
+Advanced example demonstrating UCB-M1 algorithm for budget-constrained multi-armed bandits.
 """
 
 import numpy as np
@@ -12,8 +11,8 @@ import os
 # Add the current directory to the path so we can import from src
 sys.path.append('.')
 
-from src.algorithms import UCB_M1
-from src.environments import GeneralCostRewardEnvironment
+# Import from the cbandits package
+from cbandits import UCB_M1, GeneralCostRewardEnvironment
 
 def run_ucb_m1_experiment(arm_configs, algorithm_params, budget, num_runs=10, seed=42):
     """

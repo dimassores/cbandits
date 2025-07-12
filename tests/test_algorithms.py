@@ -3,10 +3,7 @@ import numpy as np
 from unittest.mock import MagicMock, patch
 
 # Import the algorithms
-from src.algorithms import UCB_B1, UCB_M1, UCB_B2, UCB_B2C, BaseBanditAlgorithm
-
-# Import the environment (for setting up mock scenarios)
-from src.environments import GeneralCostRewardEnvironment
+from cbandits import UCB_B1, UCB_M1, UCB_B2, UCB_B2C, BaseBanditAlgorithm, GeneralCostRewardEnvironment
 
 # Define common arm configurations for testing
 # These are simplified for testing purposes.
@@ -34,12 +31,13 @@ class TestAlgorithms(unittest.TestCase):
 
     def test_base_bandit_algorithm_init(self):
         """Test BaseBanditAlgorithm initialization."""
-        with self.assertRaises(ValueError):
+        # Test that trying to instantiate the abstract class directly raises a TypeError
+        with self.assertRaises(TypeError):
             BaseBanditAlgorithm(num_arms=0, arm_configs=[], algorithm_params={})
         
-        # Test valid initialization
-        algo = BaseBanditAlgorithm(num_arms=1, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN[:1], algorithm_params=TEST_ALGO_PARAMS)
-        self.assertEqual(algo.num_arms, 1)
+        # Test that trying to instantiate with valid parameters also raises TypeError (abstract class)
+        with self.assertRaises(TypeError):
+            BaseBanditAlgorithm(num_arms=1, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN[:1], algorithm_params=TEST_ALGO_PARAMS)
 
     def test_ucb_b1_init(self):
         """Test UCB-B1 initialization."""

@@ -5,7 +5,7 @@ import numpy as np
 import scipy.stats as stats
 
 # Import environment classes
-from src.environments import BanditEnvironment, GeneralCostRewardEnvironment
+from cbandits import BanditEnvironment, GeneralCostRewardEnvironment
 
 # Define common arm configurations for testing
 # Ensure these match the types expected by GeneralCostRewardEnvironment
@@ -28,10 +28,11 @@ class TestBanditEnvironment(unittest.TestCase):
 
     def test_base_bandit_environment_init(self):
         """Test BanditEnvironment initialization, including abstract class behavior."""
-        with self.assertRaises(ValueError):
+        # Test that trying to instantiate the abstract class directly raises a TypeError
+        with self.assertRaises(TypeError):
             BanditEnvironment(num_arms=0, arm_configs=[])
         
-        # Test that trying to instantiate the abstract class directly raises a TypeError
+        # Test that trying to instantiate with valid parameters also raises TypeError (abstract class)
         with self.assertRaises(TypeError):
             BanditEnvironment(num_arms=1, arm_configs=TEST_ARM_CONFIGS_GAUSSIAN[:1])
         

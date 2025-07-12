@@ -5,14 +5,9 @@ for budget-constrained multi-armed bandits.
 """
 
 import numpy as np
-import sys
-import os
 
-# Add the parent directory to the path so we can import from src
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from src.algorithms import UCB_B1
-from src.environments import GeneralCostRewardEnvironment
+# Import from the cbandits package
+from cbandits import UCB_B1, GeneralCostRewardEnvironment
 
 def simple_ucb_b1_test():
     """
@@ -141,5 +136,9 @@ def simple_ucb_b1_test():
     print(f"Optimal arm: {optimal_arm} (reward rate: {reward_rates[optimal_arm]:.3f})")
     print(f"Arm {optimal_arm} was pulled {arm_pulls[optimal_arm]} times out of {epoch} total pulls")
 
+def main():
+    """Main function for running the UCB-B1 example."""
+    simple_ucb_b1_test()
+
 if __name__ == "__main__":
-    simple_ucb_b1_test() 
+    main() 
