@@ -6,12 +6,12 @@ This folder contains practical examples and guides for using the budget-constrai
 
 The library implements four budget-constrained bandit algorithms:
 
-| Algorithm | Description | Best For |
-|-----------|-------------|----------|
-| **UCB-B1** | Upper Confidence Bound with Budget constraint | General budget-constrained scenarios |
-| **UCB-B2** | Enhanced UCB with improved budget handling | Scenarios with varying cost distributions |
-| **UCB-B2C** | UCB-B2 with cost-aware exploration | High-cost, high-reward environments |
-| **UCB-M1** | Modified UCB for budget constraints | Scenarios requiring conservative exploration |
+| Algorithm | Description | Best For | Examples Status |
+|-----------|-------------|----------|-----------------|
+| **UCB-B1** | Upper Confidence Bound with Budget constraint | General budget-constrained scenarios | ✅ Complete |
+| **UCB-B2** | Enhanced UCB with improved budget handling | Scenarios with varying cost distributions | 🔄 Basic only |
+| **UCB-B2C** | UCB-B2 with cost-aware exploration | High-cost, high-reward environments | 🔄 Basic only |
+| **UCB-M1** | Modified UCB for budget constraints | Scenarios requiring conservative exploration | 🔄 Basic only |
 
 ## 📁 Folder Structure
 
@@ -66,7 +66,10 @@ cat guides/ucb_b1_guide.md
 
 ### `guides/` - Documentation
 - **`quick_start.md`**: Generic 5-minute guide for all algorithms
-- **`ucb_*_guide.md`**: Detailed 15-minute guides for each algorithm
+- **`ucb_b1_guide.md`**: Detailed 15-minute guide for UCB-B1 ✅
+- **`ucb_b2_guide.md`**: Detailed 15-minute guide for UCB-B2 ✅
+- **`ucb_b2c_guide.md`**: Detailed 15-minute guide for UCB-B2C ✅
+- **`ucb_m1_guide.md`**: Detailed 15-minute guide for UCB-M1 ✅
 - **Purpose**: Learn theory, parameters, and best practices
 - **Best for**: Understanding concepts and troubleshooting
 
@@ -75,27 +78,33 @@ cat guides/ucb_b1_guide.md
 - **What they show**: How to set up arms, run algorithms, interpret results
 - **Best for**: First-time users, understanding basic concepts
 - **Runtime**: ~30 seconds each
+- **Status**: UCB-B1 complete, others need implementation
 
 ### `advanced_examples/` - Parameter Experimentation
 - **Purpose**: Parameter comparison and performance analysis
 - **What they show**: How different parameters affect algorithm performance
 - **Best for**: Understanding parameter tuning, comparing strategies
 - **Runtime**: ~2-3 minutes each
+- **Status**: UCB-B1 complete, others need implementation
 
 ## 🎯 Learning Path
 
-### **Beginner Path**
+### **Beginner Path (All Algorithms)**
 1. Read `guides/quick_start.md` (5 minutes)
 2. Run `simple_examples/simple_ucb_b1_example.py`
 3. Read `guides/ucb_b1_guide.md` for deep understanding
+4. Choose your algorithm and read the corresponding guide:
+   - `guides/ucb_b2_guide.md` for bounded uncorrelated distributions
+   - `guides/ucb_b2c_guide.md` for bounded correlated distributions
+   - `guides/ucb_m1_guide.md` for heavy-tailed distributions
 
-### **Intermediate Path**
+### **Intermediate Path (All Algorithms)**
 1. Complete beginner path
 2. Run `advanced_examples/advanced_ucb_b1_example.py`
 3. Experiment with different parameters
-4. Try other algorithms (UCB-B2, UCB-B2C, UCB-M1)
+4. Try other algorithms (UCB-B2, UCB-B2C, UCB-M1) - basic examples only
 
-### **Advanced Path**
+### **Advanced Path (All Algorithms)**
 1. Complete intermediate path
 2. Compare algorithms on same scenarios
 3. Create custom arm configurations
@@ -179,9 +188,29 @@ Very Aggressive     4.0    5992.00      8.00         99.7%
 ## 🚧 Current Status
 
 - ✅ **UCB-B1**: Complete examples and guides
-- 🔄 **UCB-B2**: Examples and guides in development
-- 🔄 **UCB-B2C**: Examples and guides in development  
-- 🔄 **UCB-M1**: Examples and guides in development
+- ✅ **UCB-B2**: Algorithm implemented, guides complete, examples needed
+- ✅ **UCB-B2C**: Algorithm implemented, guides complete, examples needed  
+- ✅ **UCB-M1**: Algorithm implemented, guides complete, examples needed
+
+## 🛠️ Implementation Status
+
+### **Algorithms Available**
+All four algorithms are fully implemented in `src/algorithms/`:
+- `ucb_b1.py` - UCB-B1 for sub-Gaussian cases with known second-order moments
+- `ucb_b2.py` - UCB-B2 for bounded uncorrelated distributions
+- `ucb_b2c.py` - UCB-B2C for bounded correlated distributions  
+- `ucb_m1.py` - UCB-M1 for heavy-tailed distributions
+
+### **Examples Needed**
+To complete the examples, you would need to create:
+1. `simple_examples/simple_ucb_b2_example.py`
+2. `simple_examples/simple_ucb_b2c_example.py`
+3. `simple_examples/simple_ucb_m1_example.py`
+4. `advanced_examples/advanced_ucb_b2_example.py`
+5. `advanced_examples/advanced_ucb_b2c_example.py`
+6. `advanced_examples/advanced_ucb_m1_example.py`
+
+**Note**: All guides are now complete and available in the `guides/` folder.
 
 ## 🤝 Contributing
 
@@ -189,4 +218,5 @@ When adding examples for new algorithms:
 1. Follow the existing naming convention
 2. Use similar structure to existing examples
 3. Update this README.md with new algorithm information
-4. Create corresponding guide in `guides/` folder 
+4. Create corresponding guide in `guides/` folder
+5. Test examples with different parameter configurations 
