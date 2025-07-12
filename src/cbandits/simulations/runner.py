@@ -7,9 +7,9 @@ import os
 import datetime
 
 # Import algorithms
-from src.algorithms import UCB_B1, UCB_M1, UCB_B2, UCB_B2C
+from ..algorithms import UCB_B1, UCB_M1, UCB_B2, UCB_B2C
 # Import environment
-from src.environments import GeneralCostRewardEnvironment
+from ..environments import GeneralCostRewardEnvironment
 # Import configuration
 from config.simulation_config import (
     NUM_RUNS, BUDGETS, ARM_CONFIGS, ALGORITHM_PARAMS, MIN_EXPECTED_COST

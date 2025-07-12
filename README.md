@@ -42,7 +42,7 @@ The implemented algorithms achieve tight problem-dependent regret bounds and are
 ## Project Structure
 
 ```text
-├── src/
+├── src/cbandits/
 │   ├── algorithms/
 │   │   ├── __init__.py
 │   │   ├── ucb_b1.py
@@ -66,12 +66,30 @@ The implemented algorithms achieve tight problem-dependent regret bounds and are
 │       ├── __init__.py
 │       └── runner.py
 │
+├── docs/
+│   ├── README.md              # Documentation index
+│   ├── installation.md        # Installation guide
+│   ├── development.md         # Development guide
+│   └── automated-testing.md   # Automated testing setup
+│
 ├── examples/
 │   ├── README.md
-│   ├── simple_ucb_b1_example.py
-│   ├── advanced_ucb_b1_example.py
-│   ├── UCB_B1_Guide.md
-│   └── Quick_Start_Guide.md
+│   ├── simple_examples/
+│   │   ├── simple_ucb_b1_example.py
+│   │   ├── simple_ucb_b2_example.py
+│   │   ├── simple_ucb_b2c_example.py
+│   │   └── simple_ucb_m1_example.py
+│   ├── advanced_examples/
+│   │   ├── advanced_ucb_b1_example.py
+│   │   ├── advanced_ucb_b2_example.py
+│   │   ├── advanced_ucb_b2c_example.py
+│   │   └── advanced_ucb_m1_example.py
+│   └── guides/
+│       ├── quick_start.md
+│       ├── ucb_b1_guide.md
+│       ├── ucb_b2_guide.md
+│       ├── ucb_b2c_guide.md
+│       └── ucb_m1_guide.md
 │
 ├── config/
 │   ├── __init__.py
@@ -90,9 +108,15 @@ The implemented algorithms achieve tight problem-dependent regret bounds and are
 │   ├── raw/        # (for raw simulation data, if generated)
 │   └── processed/  # (for processed results, if generated)
 │
+├── .github/workflows/
+│   ├── ci.yml              # Main CI pipeline
+│   └── pr-checks.yml       # Pull request checks
+│
 ├── .gitignore
-├── README.md
-├── requirements.txt
+├── README.md               # Project overview
+├── pyproject.toml          # Package configuration
+├── Makefile                # Development commands
+├── .pre-commit-config.yaml # Pre-commit hooks
 └── LICENSE
 ```
 
@@ -117,7 +141,7 @@ pip install cbandits
 
 ### Development Setup
 
-For detailed installation instructions, see [INSTALL.md](INSTALL.md).
+For detailed installation instructions, see [docs/installation.md](docs/installation.md).
 
 1. Clone the repository:
    ```bash
@@ -210,6 +234,15 @@ The main entry point for running simulations is `src/simulations/runner.py`.
 ## Analyzing Results
 
 A Jupyter notebook template is provided in the `notebooks/` directory for analyzing results. (Currently, `analysis.ipynb` is empty; you can use it as a starting point for your own analysis.)
+
+## Documentation
+
+For comprehensive documentation, see the [docs/](docs/) directory:
+
+- **[Installation Guide](docs/installation.md)** - Complete setup instructions
+- **[Development Guide](docs/development.md)** - Development workflow and best practices
+- **[Automated Testing](docs/automated-testing.md)** - CI/CD setup and usage
+- **[Documentation Index](docs/README.md)** - Complete documentation overview
 
 ## Data Directory
 

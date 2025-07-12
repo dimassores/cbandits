@@ -1,0 +1,104 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Run safety check
+      run: |
+        pip install safety
+        safety check --full-report
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Run performance test
+      run: |
+        python -c "
+        import time
+        from cbandits import UCB_B1, GeneralCostRewardEnvironment
+        
+        # Simple performance test
+        arm_configs = [
+            {'name': 'Arm 0', 'type': 'gaussian', 'params': {'mean_X': 1.0, 'mean_R': 3.0, 'var_X': 0.1, 'var_R': 0.2, 'cov_XR': 0.05, 'M_X': 5.0, 'M_R': 5.0}},
+            {'name': 'Arm 1', 'type': 'gaussian', 'params': {'mean_X': 1.1, 'mean_R': 2.5, 'var_X': 0.15, 'var_R': 0.25, 'cov_XR': 0.08, 'M_X': 5.0, 'M_R': 5.0}},
+        ]
+        
+        start_time = time.time()
+        env = GeneralCostRewardEnvironment(num_arms=2, arm_configs=arm_configs, seed=42)
+        algo = UCB_B1(num_arms=2, arm_configs=arm_configs, algorithm_params={'alpha': 2.1, 'L': 0.5, 'b_min_cost': 0.01})
+        
+        # Run a quick simulation
+        budget = 1000
+        total_cost = 0
+        while total_cost < budget:
+            arm = algo.select_arm(total_cost, 1)
+            cost, reward = env.pull_arm(arm)
+            algo.update_state(arm, cost, reward)
+            total_cost += cost
+        
+        end_time = time.time()
+        print(f'Performance test completed in {end_time - start_time:.3f} seconds')
+        print(f'Total cost: {total_cost:.2f}')
+        "
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+    
+    - name: Check documentation
+      run: |
+        # Check if README exists and has content
+        if [ ! -s README.md ]; then
+          echo "README.md is empty or missing"
+          exit 1
+        fi
+        
+        # Check if all example files exist
+        for example in simple_ucb_b1_example.py simple_ucb_b2_example.py simple_ucb_b2c_example.py simple_ucb_m1_example.py; do
+          if [ ! -f "examples/simple_examples/$example" ]; then
+            echo "Missing example file: $example"
+            exit 1
+          fi
+        done
+        
+        echo "Documentation check passed" 
