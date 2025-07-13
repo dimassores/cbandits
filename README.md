@@ -1,5 +1,7 @@
 # Budget-Constrained Bandits with General Cost and Reward Distributions
 
+[![codecov](https://codecov.io/gh/dimassores/cbandits/branch/main/graph/badge.svg)](https://codecov.io/gh/dimassores/cbandits)
+
 This repository provides implementations and simulation frameworks for various algorithms addressing the budget-constrained multi-armed bandit problem, focusing on scenarios with random, potentially correlated, and heavy-tailed cost and reward distributions. The algorithms are based on the research presented in "Budget-Constrained Bandits over General Cost and Reward Distributions" by Caycі, Eryilmaz, and Srikant (AISTATS 2020).
 
 ## Table of Contents

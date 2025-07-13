@@ -20,14 +20,14 @@ Example Usage:
 """
 
 __version__ = "0.1.0"
-__author__ = "Your Name"
-__email__ = "your.email@example.com"
+__author__ = "Dimas Soares Lima"
+__email__ = "dimassoareslima@gmail.com"
 
 # Import main components for easy access
 from .algorithms import (
     BaseBanditAlgorithm,
     UCB_B1,
-    UCB_B2, 
+    UCB_B2,     
     UCB_B2C,
     UCB_M1
 )
